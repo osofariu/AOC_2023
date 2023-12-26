@@ -1,17 +1,16 @@
-fun main() {
-    fun part1(input: List<String>): Int {
-        return input.size
-    }
+ class Day01 {
+      fun part1(input: List<String>): Int {
+          return input.sumOf { extractCalibrationCode(it) }
+      }
 
-    fun part2(input: List<String>): Int {
-        return input.size
-    }
-
-    // test if implementation meets criteria from the description, like:
-    val testInput = readInput("Day01_test")
-    check(part1(testInput) == 1)
-
-    val input = readInput("Day01")
-    part1(input).println()
-    part2(input).println()
+     private fun extractCalibrationCode(calibrationText: String): Int {
+         val firstDigit = calibrationText.first { it.isDigit() }.toString().toInt()
+         val lastDigit = calibrationText.last { it.isDigit() }.toString().toInt()
+         return 10 * firstDigit + lastDigit;
+     }
 }
+
+ fun main(args: Array<String>) {
+     val input = readInput("day01")
+     println("input for " + input.size + " records: " + Day01().part1(input))
+ }

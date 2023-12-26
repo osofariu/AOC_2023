@@ -1,12 +1,18 @@
 import java.math.BigInteger
 import java.security.MessageDigest
-import kotlin.io.path.Path
-import kotlin.io.path.readLines
 
 /**
  * Reads lines from the given input txt file.
  */
-fun readInput(name: String) = Path("src/$name.txt").readLines()
+
+fun readInput(name: String): List<String> {
+    val resourceAsStream = object {}.javaClass.getResourceAsStream("$name.txt")
+    if (resourceAsStream != null) {
+        return resourceAsStream.bufferedReader().readLines()
+    } else {
+        throw Exception("Resource not found: $name.txt")
+    }
+}
 
 /**
  * Converts string to md5 hash.
