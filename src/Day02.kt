@@ -1,26 +1,26 @@
-class Day02(private val games: List<String>, private val cubesAvailable: Map<Color, Int>) {
+class Day02(private val games: List<String>) {
     enum class Color {
         red, green, blue
     }
 
-    fun part1(): Int {
-        return games.sumOf {  sumValidGameIDs(it) }
+    fun part1(cubesAvailable: Map<Color, Int>): Int {
+        return games.sumOf {  sumValidGameIDs(it, cubesAvailable) }
     }
-    private fun sumValidGameIDs(game: String): Int {
+    private fun sumValidGameIDs(game: String, cubesAvailable:Map<Color, Int>): Int {
         val (gameId: String, rounds: String) = extractGameIdAndRounds(game)
         val roundsForGame = rounds.split(";")
 
-        return if (roundsForGame.all { roundValid(it) })
+        return if (roundsForGame.all { roundValid(it, cubesAvailable) })
             gameId.toInt()
         else
             0
     }
 
-    private fun roundValid(round: String): Boolean {
-        return round.split(",").all { c -> haveEnoughOfColor(c) }
+    private fun roundValid(round: String, cubesAvailable:Map<Color, Int>): Boolean {
+        return round.split(",").all { c -> haveEnoughOfColor(c, cubesAvailable ) }
     }
 
-    private fun haveEnoughOfColor(colorEntry: String): Boolean {
+    private fun haveEnoughOfColor(colorEntry: String, cubesAvailable:Map<Color, Int>): Boolean {
         val (count, color) = Regex("(\\d+)\\s(\\w+)").matchEntire(colorEntry)!!.destructured
         return cubesAvailable[Color.valueOf(color)]!! >= count.toInt()
     }
@@ -41,5 +41,5 @@ fun makeCube(red: Int, green: Int, blue: Int): Map<Day02.Color, Int> {
 
 fun main(args: Array<String>) {
     val input = readInput("day02")
-    println("part 1 input for " + input.size + " records: " + Day02(input, makeCube(12, 13, 14) ).part1())
+    println("part 1 input for " + input.size + " records: " + Day02(input).part1(makeCube(12, 13, 14) ))
 }
