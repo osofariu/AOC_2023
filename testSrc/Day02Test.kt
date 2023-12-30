@@ -30,8 +30,9 @@ class Day02Test {
         val testInput = readInput("day02")
         expectThat(Day02(testInput).part2()).isEqualTo(2286)
     }
+    fun makeCube(red: Int, green: Int, blue: Int): Map<Day02.Color, Int> {
+        return mapOf(Day02.Color.red to red, Day02.Color.green to green, Day02.Color.blue to blue)
+    }
 }
 
-fun makeCube(red: Int, green: Int, blue: Int): Map<Day02.Color, Int> {
-    return mapOf(Day02.Color.red to red, Day02.Color.green to green, Day02.Color.blue to blue)
-}
+
