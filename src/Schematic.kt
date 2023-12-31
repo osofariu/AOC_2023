@@ -31,7 +31,7 @@ class Schematic(val tokens: List<Token> , val tokenArray: Map<Pair<Int, Int>, To
         val (allChunks, lastTokens) = tokens.filter { Regex(regex).matches(it.value.toString()) }
             .fold(Pair(emptyList<Chunk>(), emptyList<Token>())) { acc, token ->
                 val (chunks, tokens) = acc
-                if (tokens.isEmpty() || tokens.last().column == token.column - 1) {
+                if (tokens.isEmpty() || (tokens.last().column == token.column - 1 && tokens.last().row == token.row)) {
                     Pair(chunks, tokens.plus(token))
                 } else {
                     Pair(chunks.plus(Chunk(tokens)), listOf(token))

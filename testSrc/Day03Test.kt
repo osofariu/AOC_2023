@@ -8,4 +8,10 @@ class Day03Test {
         val testInput = readInput("day03")
         expectThat(Day03(testInput).part1()).isEqualTo(4361)
     }
+
+    @Test
+    fun whenNextDigitIsOnNextRowAndColumnItsANewCluster() {
+        val testInput = readInput("day03b")
+        expectThat(Day03(testInput).part1()).isEqualTo(581)
+    }
 }
