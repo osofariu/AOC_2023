@@ -1,8 +1,9 @@
 class Day03(private val schematicRows: List<String>) {
     fun part1(): Int {
-        return Schematic.from(schematicRows).chunks("\\d").fold(0) { acc, chunk: Schematic.Chunk ->
-             if (chunk.neighbours().any { isSymbol(it) })
-                acc + chunk.value().toInt()
+        val schematic = Schematic.from(schematicRows)
+        return schematic.numericChunks.fold(0) { acc, chunk: Chunk ->
+             if (chunk.neighbours(schematic.tokenMap).any { isSymbol(it) })
+                acc + chunk.intValue()
             else
                 acc
         }
@@ -13,33 +14,20 @@ class Day03(private val schematicRows: List<String>) {
 
     fun part2(): Int {
         val schematic = Schematic.from(schematicRows)
-        val chunks = schematic.chunks("\\d")
-
-        return  schematic.tokens.filter { it.value().toString() == "*" }
-            .map { it -> it.tokenNeighbors() }
-            .map { neighborChunks(chunks, it) }
+        return schematic.tokens.asSequence().filter { it.value() == "*" }
+            .map { it.tokenNeighbors() }
+            .map { schematic.neighborChunks(it) }
             .toSet()
-            .fold(0) {acc: Int, chunksNearLocation: List<Schematic.Chunk> ->
-                if (chunksNearLocation.size == 2) {
-                    acc + (chunksNearLocation[0].value().toInt() * chunksNearLocation[1].value().toInt())
-                } else {
+            .fold(0) {acc: Int, chunksNearLocation: List<Chunk> ->
+                if (chunksNearLocation.size == 2)
+                    acc + (chunksNearLocation[0].intValue() * chunksNearLocation[1].intValue())
+                else
                     acc
-            }
         }
-    }
-
-    private fun neighborChunks(chunks: List<Schematic.Chunk>, neighborLocation: List<Pair<Int, Int>> ): List<Schematic.Chunk> {
-        return neighborLocation.fold(emptySet<Schematic.Chunk>()){ acc: Set<Schematic.Chunk>, location: Pair<Int, Int> ->
-            val chunkAtLocation = chunks.find {it.existsAtLocation(location.first, location.second) }
-            if (chunkAtLocation != null)
-                acc.plus(chunkAtLocation)
-            else
-                acc
-        }.toList()
     }
 }
 
-fun main(args: Array<String>) {
+fun main() {
     val input = readInput("day03")
     println("part 1 input for " + input.size + " sum: " + Day03(input).part1() )
     println("part 2 input for " + input.size + " sum: " + Day03(input).part2() )
