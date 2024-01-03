@@ -1,3 +1,6 @@
+package day4
+
+import readInput
 import kotlin.math.pow
 
 class Day04(private val scratchCards: List<String>) {

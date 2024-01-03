@@ -1,3 +1,7 @@
+package day1
+
+import readInput
+
 class Day01 {
     fun part1(input: List<String>): Int {
         return input.sumOf { this.extractSimpleCalibrationCode(it) }

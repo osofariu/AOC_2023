@@ -1,3 +1,5 @@
+package day5
+
 import org.junit.Test
 import strikt.api.expectThat
 import strikt.assertions.isTrue

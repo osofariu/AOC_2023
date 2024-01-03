@@ -1,3 +1,5 @@
+package day3
+
 class Token(val row: Int, val column: Int, val value: Char) {
     fun value(): String {
        return value.toString()

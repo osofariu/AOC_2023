@@ -1,3 +1,5 @@
+package day3
+
 class Schematic(val tokens: List<Token>, val tokenMap: Map<Pair<Int, Int>, Token>, val numericChunks: List<Chunk>) {
     companion object {
         fun from(schematicRows: List<String>): Schematic {

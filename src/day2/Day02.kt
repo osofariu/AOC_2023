@@ -1,3 +1,7 @@
+package day2
+
+import readInput
+
 class Day02(private val games: List<String>) {
     enum class Color {
         red, green, blue

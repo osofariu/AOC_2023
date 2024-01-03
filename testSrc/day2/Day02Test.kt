@@ -1,5 +1,8 @@
-import Day02.Color
+package day2
+
+import day2.Day02.Color
 import org.junit.Test
+import readInput
 import strikt.api.expectThat
 import strikt.assertions.isEqualTo
 

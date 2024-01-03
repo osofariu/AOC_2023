@@ -1,3 +1,5 @@
+package day3
+
 class Chunk(private val tokens: List<Token>) {
     fun neighbours(tokenMap: Map<Pair<Int, Int>, Token>): List<Char> {
         val neighborPairs = tokens.flatMap { it.tokenNeighbors()}

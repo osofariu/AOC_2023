@@ -1,4 +1,7 @@
+package day1
+
 import org.junit.Test
+import readInput
 import strikt.api.expectThat
 import strikt.assertions.isEqualTo
 

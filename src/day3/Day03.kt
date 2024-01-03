@@ -1,3 +1,7 @@
+package day3
+
+import readInput
+
 class Day03(private val schematicRows: List<String>) {
     fun part1(): Int {
         val schematic = Schematic.from(schematicRows)
@@ -28,7 +32,7 @@ class Day03(private val schematicRows: List<String>) {
 }
 
 fun main() {
-    val input = readInput("day03")
+    val input = readInput("day3")
     println("part 1 input for " + input.size + " sum: " + Day03(input).part1() )
     println("part 2 input for " + input.size + " sum: " + Day03(input).part2() )
 }
