@@ -23,7 +23,6 @@ class Day04(private val scratchCards: List<String>) {
 
     private fun scoreCardPart1(winList: List<Int>, haveList: List<Int>): Int {
        val winningCards: Int = winningCardsCount(haveList, winList)
-        println("wins: $winningCards, points: ${2.0.pow(winningCards - 1.0).toInt()}")
         return 2.0.pow( winningCardsCount(haveList, winList) - 1.0).toInt()
     }
 
