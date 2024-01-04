@@ -27,4 +27,10 @@ class Day05Test {
         val testInput = readInput("day05")
         expectThat(Day05(testInput).part1()).isEqualTo(35)
     }
+
+    @Test
+    fun `given same example, return smallest location for range of seeds`() {
+        val testInput = readInput("day05")
+        expectThat(Day05(testInput).part2()).isEqualTo(46)
+    }
 }

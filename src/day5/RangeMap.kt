@@ -1,6 +1,6 @@
 package day5
 
-class RangeMap(val destinationStart: Long, val sourceStart: Long, val rangeLength: Long) {
+class RangeMap(private val destinationStart: Long, private val sourceStart: Long, private val rangeLength: Long) {
     public fun lookup(key: Long): Long {
         return if (key >= sourceStart && key < sourceStart + rangeLength) {
             key - sourceStart + destinationStart
