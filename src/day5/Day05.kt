@@ -39,23 +39,18 @@ class Day05(val input: List<String>) {
 
     fun part2(): Long {
         val (seedRanges, rangeMaps) = parseRangeMaps(input)
-        val seedRangePairs = makeRanges(seedRanges)
-
-        var minLocation = Long.MAX_VALUE
-        seedRangePairs.forEach{ rangePair ->
-            val (first, range) = rangePair
-            for ( seed in  first..<first+range) {
-                minLocation = min(minLocation, locationForSeed(seed, rangeMaps))
-            }
+        return makeRanges(seedRanges).minOf {
+            val (first, range) = it
+            (first..<first + range).minOf { seed -> locationForSeed(seed, rangeMaps) }
         }
-        return minLocation
     }
+}
 
     private fun makeRanges(seedRanges: List<Long>): List<Pair<Long,Long>> =
          seedRanges
              .chunked(2)
              .map { Pair(it[0], it[1]) }
-}
+
 fun main() {
     val input = readInput("day05")
     println("part 1 input for " + input.size + "  " + Day05(input).part1() )
