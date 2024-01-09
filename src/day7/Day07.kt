@@ -1,51 +1,68 @@
 package day7
+import day7.comparator.PlayComparator
+import day7.comparator.JokerPlayComparator
+import day7.types.Hand
+import day7.types.JokerPlay
+import day7.types.Play
 import readInput
 
 class Day07(private val input: List<String>) {
 
-    private val playComparator = Comparator<Pair<Hand, Int>> { play1, play2 ->
-        handComparator.compare(play1.first, play2.first)
-    }
+    fun part1(): Int = input
+        .map { extractPlay(it) }
+        .sortedWith(PlayComparator())
+        .foldIndexed(0) { index, acc, play ->
+            acc + play.bid * (index + 1)
+        }
 
-    private val playComparatorPart2 = Comparator<Play> { play1, play2 ->
-        handComparatorPart2.compare(play1, play2)
-    }
-    fun part1(): Int {
-        val plays: List<Pair<Hand, Int>> = parse(input)
-        return plays
-            .sortedWith(playComparator)
-            .foldIndexed(0) { index, acc, play ->
-                acc + play.second * (index + 1)
-            }
-    }
-
-    private fun parse(input: List<String>): List<Pair<Hand, Int>> {
-        return input.map { line ->
-            val (hand: Hand, bid: Int) = extractPlay(line)
-            Pair(hand, bid)
-        }}
-
-    private fun extractPlay(line: String): Pair<Hand, Int> {
+    private fun extractPlay(line: String): Play {
         val lineParts = line.split(" ")
-        val hand = Hand(lineParts[0])
-        val bid = lineParts[1].toInt()
-        return Pair(hand, bid)
+        return  Play(Hand(lineParts[0]), lineParts[1].toInt())
     }
 
-    fun part2(): Int {
-        val plays: List<Pair<Hand, Int>> = parse(input)
-        return plays
-            .map {play -> maximizeJokerPower(play)}
-            .sortedWith(playComparatorPart2)
-            .foldIndexed(0) { index, acc, play ->
+    fun part2(): Int =
+        input
+            .map { extractPlay(it) }
+            .map { JokerPlay(it.hand, maximizeJokerPower(it), it.bid) }
+            .sortedWith(JokerPlayComparator())
+            .foldIndexed(0) { index: Int, acc: Int, play: JokerPlay ->
                 acc + (play.bid * (index + 1))
             }
-    }
 
-    private fun maximizeJokerPower(play: Pair<Hand, Int>): Play =
-        Play(play.first, play.first.maximizeJokerPower(), play.second)
-
+    private fun maximizeJokerPower(play: Play): Hand =
+        jokerReplacementOptionsForHand(play.hand.stringValue)
+            .map { Pair(Hand(it), Hand(it).handValue()) }
+            .sortedWith(compareBy { it.second })
+            .last()
+            .first
 }
+
+private fun jokerReplacementOptionsForHand(cards: String): List<String> {
+    return if (cards.isEmpty())
+        listOf()
+    else if (firstCardNotJoker(cards)) {
+        combineWithList(cards[0].toString(), jokerReplacementOptionsForHand(cards.substring(1)))
+    } else {
+        createJokerReplacements(cards)
+    }
+}
+
+private fun createJokerReplacements(cards: String): List<String> {
+    val jokerCardReplacements = listOf("A", "K", "Q", "T", "9", "8", "7", "6", "5", "4", "3", "2")
+    return if (processingLastCard(cards)) {
+        jokerCardReplacements
+    } else {
+        jokerCardReplacements.flatMap { r -> combineWithList(r, jokerReplacementOptionsForHand(cards.substring(1))) }
+    }
+}
+
+private fun processingLastCard(cards: String) = cards.length == 1
+
+private fun firstCardNotJoker(cards: String) = cards[0] != 'J'
+
+private fun combineWithList(s: String, options: List<String>): List<String> =
+    if (options.isEmpty()) listOf(s) else options.map { o -> s + o }
+
 fun main() {
     val input = readInput("day07")
     println("part 1 input for " + input.size + "  " + Day07(input).part1() )

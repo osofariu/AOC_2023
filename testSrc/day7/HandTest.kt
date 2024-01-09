@@ -1,5 +1,7 @@
 package day7
 
+import day7.types.Hand
+import day7.types.Hand.HandType
 import org.junit.Test
 import strikt.api.expectThat
 import strikt.assertions.isEqualTo
