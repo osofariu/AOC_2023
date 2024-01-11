@@ -1,9 +1,6 @@
 package day8
 
 import readInput
-import java.time.LocalDateTime
-import java.time.format.DateTimeFormatter
-
 
 class Day08(private val mapInstructions: List<String>) {
     fun part1(): Int {
@@ -31,57 +28,42 @@ class Day08(private val mapInstructions: List<String>) {
     }
 
     private fun navigate(start: String, instructions: String, map: Map<String, Pair<String, String>>): String {
-        return instructions.fold(start) { from, direction ->
-            navigateOneStep(map, from, direction)
+        var intermediate = start
+        for (element in instructions) {
+            intermediate = if (element == 'L') {
+                map[intermediate]!!.first
+            } else {
+                map[intermediate]!!.second
+            }
         }
-    }
-
-
-    private fun navigateOneStep(map: Map<String, Pair<String, String>>, from: String, direction: Char): String {
-        val res = when (direction) {
-            'L' -> map[from]!!.first
-            'R' -> map[from]!!.second
-            else -> throw IllegalStateException("Bad input")
-        }
-       // println("from: $from, direction: $direction, to: $res")
-        return res
+        return intermediate
     }
 
     fun part2(): Long {
-        val (instructions, map) = parseInput(mapInstructions)
-        val startingPoints = map.keys.filter { it.endsWith("A") }
+        val (instructions, stringMap) = parseInput(mapInstructions)
+        val initialStringKeys = stringMap.keys.filter { it.endsWith("A") }
+        val iterations = initialStringKeys.map {distanceToZ(it, stringMap, instructions) }.toSet().reduce { a: Long, b: Long -> a * b }
+        val result = iterations * instructions.length
+        println("iter: $iterations, result: $result")
+        return result
+    }
 
-        var intermediate = startingPoints
-        var counter = 0
-        println("part 2 starting with $intermediate")
-        showProgress(counter)
-        while (!intermediate.all { it.endsWith("Z") }) {
-            counter += 1
-            instructions.map { instruction ->
-                intermediate = intermediate.map { startingPoint ->
-                    when (instruction) {
-                        'L' -> map[startingPoint]!!.first
-                        'R' -> map[startingPoint]!!.second
-                        else -> throw IllegalStateException("Bad input $startingPoint")
-                    }
+    private fun distanceToZ(key: String, stringMap:Map<String, Pair<String, String>>, instructions: String): Long {
+        var counter: Long = 0
+        var currentKey = key
+        while (!currentKey.endsWith("Z")) {
+            counter++
+            for (element in instructions) {
+                currentKey = if (element == 'L') {
+                    stringMap[currentKey]!!.first
+                } else {
+                    stringMap[currentKey]!!.second
                 }
             }
-            if (counter % 1000000 == 0) {
-                showProgress(counter)
-            }
         }
-        println("Finished. Counter = $counter")
-        return counter.toLong() * instructions.length
+        println("for $key it took $counter steps")
+        return counter
     }
-}
-
-
-
-private fun showProgress(counter: Int) {
-    val formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")
-    val current = LocalDateTime.now().format(formatter)
-    val counterStr = counter.toString().padStart(10, ' ')
-    println("$current\t$counterStr")
 }
 
 fun main() {

@@ -4,6 +4,8 @@ plugins {
 dependencies {
     testImplementation(kotlin("test"))
     testImplementation("io.strikt:strikt-core:0.34.1")
+    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.7.3")
+    testImplementation("org.jetbrains.kotlinx:kotlinx-coroutines-test:1.7.3")
 }
 
 group = "org.sofariu.aoc.kotlin"
