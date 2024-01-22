@@ -98,5 +98,9 @@ class Maze(input: List<String>) {
             print("\n")
         }
     }
+
+    fun countTilesInLoop(): Int {
+        TODO("Not yet implemented")
+    }
 }
 
