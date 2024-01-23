@@ -11,4 +11,11 @@ class Day10Test {
         val testInput = readInput("day10")
         expectThat(Day10(testInput).part1()).isEqualTo(8)
     }
+
+    @Test
+    fun `give simple example calculate the number of tiles within the loop`() {
+        val testInput = readInput("day10b")
+        expectThat(Day10(testInput).part2()).isEqualTo(4)
+    }
+
 }
